@@ -1,0 +1,7 @@
+Estrutura das Requisições de pesquisa para os portais de notícias:
+
+G1: 			g1.globo.com/busca/?q=palavra+chave&species=notícias
+Folha:			search.folha.uol.com.br/?q=palavra+chave
+Veja:			cse.google.com/cse?cx=005913688313154739324%3A0mtovcziiwg&ie=UTF-8&q=palavra%20chave#gsc.tab=0&gsc.q=temer&gsc.page=1
+Estadão:		busca.estadao.com.br/?tipo_conteudo=Notícias&q=PALAVRA%20CHAVE
+Carta Capital:	https://www.cartacapital.com.br/@@search?advanced_search=False&sort_on=&SearchableText=PALAVRA%20CHAVE&portal_type%3Alist=collective.nitf.content&created.query%3Arecord%3Alist%3Adate=1970-01-02&created.range%3Arecord=min
