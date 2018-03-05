@@ -1,0 +1,1 @@
+Url da folha: A url encurtada pode ser passada diretamente para o parser afim de extrair as informações

@@ -1,6 +1,5 @@
 import pymysql
 import traceback
-from Twitterbot import *
 
 class DatabaseConnector:
     def __init__(self, server_address, username, password, target_database):
@@ -56,6 +55,14 @@ class DatabaseConnector:
 
     def getUniqueNewswireTweetIds(self):
         sql = "SELECT newswire_tweets_id FROM newswire_tweets"
+        #Get a list of tuples
+        ids = self.selectSQLCommand(sql)
+        #Transforming in a list
+        ids = [i[0] for i in ids]
+        return ids
+
+    def getUniqueNewswireTweetIdsForAnAgency(self, agency):
+        sql = "SELECT newswire_tweets_id FROM newswire_tweets WHERE news_agency = \'" + agency + "\'"
         #Get a list of tuples
         ids = self.selectSQLCommand(sql)
         #Transforming in a list

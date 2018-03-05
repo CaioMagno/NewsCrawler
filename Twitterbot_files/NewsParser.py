@@ -2,6 +2,7 @@ import requests, re
 from bs4 import BeautifulSoup
 from collections import namedtuple
 import unicodedata
+import re
 
 from collections import namedtuple
 
@@ -42,16 +43,16 @@ class NewsScrapper:
 
 
 class NewsParser:
-    def getNewsContent(self, link):
+    def getNewsContent(self, pageSoup):
         pass
 
-    def getNewsHeadline(self, link):
+    def getNewsHeadline(self, pageSoup):
         pass
 
-    def getSubtitle(self, link):
+    def getSubtitle(self, pageSoup):
         pass
 
-    def getPublishDate(self, link):
+    def getPublishDate(self, pageSoup):
         pass
 
     def parsePage(self):
@@ -81,6 +82,9 @@ class NewsParserG1(NewsParser):
             return pageSoup.select("h1.content-head__title")[0].text.strip()
 
     def getSubtitle(self, pageSoup):
+        if pageSoup.find(name="h2", itemprop="alternativeHeadline") == None:
+            return ""
+
         subtitle = pageSoup.find(name="h2", itemprop="alternativeHeadline").text.strip()
         return subtitle
 
@@ -140,6 +144,28 @@ class NewsParserEstadao(NewsParser):
         content = [unicodedata.normalize("NFKD", paragraph.text.strip()) for paragraph in
                    content_container.find_all(name="p")]
         return content
+
+class NewsParserUolPolitica(NewsParser):
+    def __init__(self, url):
+        self.url = url
+
+    def getNewsHeadline(self, pageSoup):
+        return pageSoup.find_all("h1")[1].text
+
+    def getSubtitle(self, pageSoup):
+        #Não possui subtitulo
+        return ""
+
+    def getPublishDate(self, pageSoup):
+        date = pageSoup.find(name="span", class_="color1").text
+        date = re.findall("(\d{2}/\d{2}/\d{4})", date)[0]
+        return date
+
+    def getNewsContent(self, pageSoup):
+        content = [p.text for p in pageSoup.find(name = "div", attrs={"id": "texto"}).find_all("p", class_ = "")]
+        return content
+
+
 
 
 class NewsScrapperG1 (NewsScrapper):

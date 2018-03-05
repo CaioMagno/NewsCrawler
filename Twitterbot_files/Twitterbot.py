@@ -1,20 +1,15 @@
 from tweepy.streaming import StreamListener
-# from credentials import *
-# from newswire_ids import *
 import tweepy
+from Twitterbot_files.NewswireIds import *
+from Twitterbot_files.DatabaseUtils import DatabaseConnector
 
-from tweepy import Stream
-from tweepy import OAuthHandler
-
-from DatabaseUtils import DatabaseConnector
-
-g1_politica = 31504246
-politica_estadao = 76369002
-folha_poder = 90963197
-uol_politica = 133435134
-o_globo_politica = 156719729
-
-newswire_ids = [g1_politica, politica_estadao, folha_poder, uol_politica, o_globo_politica]
+# g1_politica = 31504246
+# politica_estadao = 76369002
+# folha_poder = 90963197
+# uol_politica = 133435134
+# o_globo_politica = 156719729
+#
+# newswire_ids = [g1_politica, politica_estadao, folha_poder, uol_politica, o_globo_politica]
 
 class TwitterCrawlerRobot(StreamListener):
     ''' Handles data received from the stream. '''
@@ -74,9 +69,12 @@ class NewswireTweet(Tweet):
     def __init__(self, status):
         self.tweetId = str(status.id)
         self.newsAgency = status.author.screen_name
-        self.url = status.entities["urls"][0]["url"]
+        if len(status.entities["urls"]) == 0:
+            self.url = ""
+        else:
+                self.url = status.entities["urls"][0]["url"]
         self.date = status.created_at
-        self.content = status.text.replace(self.url, "").replace("'", "\'").replace('"', "\"")
+        self.content = status.text.replace(self.url, "").replace("'", "\'").replace('"', "\"").encode('utf-8')
         self.retweet_count = status.retweet_count
         self.favorite_count = status.favorite_count
         hashtags = [hashtag['text'] for hashtag in status.entities['hashtags']]
@@ -94,7 +92,7 @@ class ReplyTweet(Tweet):
             self.place = status.place.name
         else:
             self.place = ""
-        self.content = status.text.replace("'", "\'").replace('"', "\"")
+        self.content = status.text.replace("'", "\'").replace('"', "\"").encode('utf-8')
         self.originalTweetId = status.in_reply_to_status_id
         hashtags = [hashtag['text'] for hashtag in status.entities['hashtags']]
         self.hashtags = ' '.join(hashtags)

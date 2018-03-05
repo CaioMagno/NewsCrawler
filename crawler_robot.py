@@ -2,7 +2,7 @@ from Twitterbot import *
 from tweepy import Stream
 from tweepy import OAuthHandler
 #from credentials import *
-#from newswire_ids import *
+from NewswireIds import *
 
 consumer_key = "a0AYMKXUSn6zZDQJLcD3mXdTV"
 consumer_secret = "xdiWlfsFtxAUl70KQR1EK9uBYKfGQb7JPpa7rmcW5Ry7x7KMyC"
