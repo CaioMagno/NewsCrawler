@@ -66,19 +66,23 @@ class Tweet:
         pass
 
 class NewswireTweet(Tweet):
-    def __init__(self, status):
-        self.tweetId = str(status.id)
-        self.newsAgency = status.author.screen_name
-        if len(status.entities["urls"]) == 0:
-            self.url = ""
-        else:
+    def __init__(self, status, mode = "crawler"):
+        if mode == "crawler":
+            self.tweetId = str(status.id)
+            self.newsAgency = status.author.screen_name
+            if len(status.entities["urls"]) == 0:
+                self.url = ""
+            else:
                 self.url = status.entities["urls"][0]["url"]
-        self.date = status.created_at
-        self.content = status.text.replace(self.url, "").replace("'", "\'").replace('"', "\"").encode('utf-8')
-        self.retweet_count = status.retweet_count
-        self.favorite_count = status.favorite_count
-        hashtags = [hashtag['text'] for hashtag in status.entities['hashtags']]
-        self.hashtags = ' '.join(hashtags)
+            self.date = status.created_at
+            self.content = status.text.replace(self.url, "").replace("'", "\'").replace('"', "\"").encode('utf-8')
+            self.retweet_count = status.retweet_count
+            self.favorite_count = status.favorite_count
+            hashtags = [hashtag['text'] for hashtag in status.entities['hashtags']]
+            self.hashtags = ' '.join(hashtags)
+
+        elif mode == "db":
+            self.id, self.tweet_id, self.newsAgency, self.url, self.date, self.content, self.retweet_count, self.favorite_count, self.hashtags  = status
 
     def getSQLParams(self):
         return (self.tweetId, self.newsAgency, self.url, self.date.strftime("%d/%m/%Y"), self.content, self.retweet_count, self.favorite_count, self.hashtags)

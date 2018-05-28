@@ -48,6 +48,11 @@ class DatabaseConnector:
         return row
 
     def insertReplyTweet(self, tweet):
+        ids = self.getUniqueReplyTweetIds()
+        if tweet.tweetId in ids:
+            print("\n Este tweet de resposta já consta na base de dados")
+            return 0
+
         sql = "INSERT INTO reply_tweets (tweets_id, date, place, content, original_tweet_id, hashtags) \
                                             VALUES (%s, %s, %s, %s, %s, %s)"
         row = self.insertSQLCommand(sql, tweet)
@@ -55,6 +60,14 @@ class DatabaseConnector:
 
     def getUniqueNewswireTweetIds(self):
         sql = "SELECT newswire_tweets_id FROM newswire_tweets"
+        #Get a list of tuples
+        ids = self.selectSQLCommand(sql)
+        #Transforming in a list
+        ids = [i[0] for i in ids]
+        return ids
+
+    def getUniqueReplyTweetIds(self):
+        sql = "SELECT tweets_id FROM reply_tweets"
         #Get a list of tuples
         ids = self.selectSQLCommand(sql)
         #Transforming in a list

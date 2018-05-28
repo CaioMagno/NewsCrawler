@@ -1,8 +1,8 @@
-from Twitterbot import *
+from Twitterbot_files.Twitterbot import *
 from tweepy import Stream
 from tweepy import OAuthHandler
 #from credentials import *
-from NewswireIds import *
+from Twitterbot_files.NewswireIds import *
 
 consumer_key = "a0AYMKXUSn6zZDQJLcD3mXdTV"
 consumer_secret = "xdiWlfsFtxAUl70KQR1EK9uBYKfGQb7JPpa7rmcW5Ry7x7KMyC"
